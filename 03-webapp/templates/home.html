@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/styles.css" />
+    <title>Todo List</title>
+  </head>
+  <body>
+    <main class="page">
+      <main class="app">
+        <div class="card">
+          <section class="title">
+            <h1>Todo List</h1>
+          </section>
+
+          <section class="content">
+            {{range .}}
+            <div class="todo">
+              {{if .Done}}
+              <input id="check-{{ .ID }}" type="checkbox" checked />
+              {{else}}
+              <input id="check-{{ .ID }}" type="checkbox" />
+              {{end}}
+              <p>{{ .Title }}</p>
+              <a href="/remove?id={{ .ID }}" class="remove">Remove</a>
+            </div>
+            {{else}}
+            <div><strong>No Todo</strong></div>
+            {{end}}
+          </section>
+
+          <section class="form">
+            <form action="/add" method="post" style="display: contents">
+              <input class="input-text" type="text" name="title" placeholder="Enter a new todo" />
+              <button class="submit" type="submit">Add</button>
+            </form>
+          </section>
+        </div>
+      </main>
+    </main>
+
+    <script>
+      let todos = {{ . }};
+
+      todos.forEach((todo) => {
+        let checkbox = document.getElementById(`check-${todo.ID}`);
+        checkbox.addEventListener("change", () => {
+          location.href = `/active?id=${todo.ID}`;
+        });
+      });
+    </script>
+  </body>
+</html>
